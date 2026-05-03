@@ -51,23 +51,25 @@ const resolveImports = async (
 			baseUrl: targetUrl,
 		})
 
-		const nestedBlocks = await resolveImports(
-			importedModule,
-			fileLoader,
-			visited,
-			targetUrl,
-		)
+		// const nestedBlocks = await resolveImports(
+		// 	importedModule,
+		// 	fileLoader,
+		// 	visited,
+		// 	targetUrl,
+		// )
 
-		for (const [key, block] of nestedBlocks)
-			if (!allBlocks.has(key)) allBlocks.set(key, block)
+		// for (const [key, block] of nestedBlocks)
+		// 	if (!allBlocks.has(key)) allBlocks.set(key, block)
 
 		const blocksToImport = fetchBlocks(importedModule, importDecl)
 
 		for (const [key, block] of blocksToImport) {
-			if (allBlocks.has(key))
+			if (allBlocks.has(key)) {
+				console.log({ allBlocks, blocksToImport })
 				throw new Error(
 					`Block alias "${key}" already exists in current module (conflict with import from "${importDecl.url}")`,
 				)
+			}
 
 			allBlocks.set(key, block)
 		}
